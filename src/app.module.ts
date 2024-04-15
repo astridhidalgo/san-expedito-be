@@ -14,6 +14,7 @@ import { Categoria } from './categorias/entities/categoria.entity';
 import { Cliente } from './clientes/entities/cliente.entity';
 import { Proveedor } from './proveedores/entities/proveedor.entity';
 import { Usuario } from './usuarios/entities/usuario.entity';
+import { Producto } from './productos/entities/producto.entity';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { Usuario } from './usuarios/entities/usuario.entity';
       username: 'root',
       password: '',
       database: 'san_expedito',
-      entities: [Categoria, Cliente, Proveedor, Usuario],
+      entities: [Categoria, Cliente, Proveedor, Usuario, Producto],
       synchronize: true
     }), 
     CategoriasModule,
