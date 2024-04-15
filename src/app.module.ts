@@ -8,10 +8,33 @@ import { ClientesModule } from './clientes/clientes.module';
 import { ProductosModule } from './productos/productos.module';
 import { ProveedoresModule } from './proveedores/proveedores.module';
 import { FacturasProductosModule } from './facturas_productos/facturas_productos.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
+import { Categoria } from './categorias/entities/categoria.entity';
 
 @Module({
-  imports: [CategoriasModule, UsuariosModule, FacturasModule, ClientesModule, ProductosModule, ProveedoresModule, FacturasProductosModule],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: '',
+      database: 'san_expedito',
+      entities: [Categoria],
+      synchronize: true
+    }), 
+    CategoriasModule,
+    UsuariosModule,
+    FacturasModule, 
+    ClientesModule, 
+    ProductosModule, 
+    ProveedoresModule, 
+    FacturasProductosModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private dataSource: DataSource) {}
+}
