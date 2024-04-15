@@ -13,6 +13,7 @@ import { DataSource } from 'typeorm';
 import { Categoria } from './categorias/entities/categoria.entity';
 import { Cliente } from './clientes/entities/cliente.entity';
 import { Proveedor } from './proveedores/entities/proveedor.entity';
+import { Usuario } from './usuarios/entities/usuario.entity';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { Proveedor } from './proveedores/entities/proveedor.entity';
       username: 'root',
       password: '',
       database: 'san_expedito',
-      entities: [Categoria, Cliente, Proveedor],
+      entities: [Categoria, Cliente, Proveedor, Usuario],
       synchronize: true
     }), 
     CategoriasModule,
