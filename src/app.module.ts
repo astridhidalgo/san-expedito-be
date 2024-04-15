@@ -12,6 +12,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { Categoria } from './categorias/entities/categoria.entity';
 import { Cliente } from './clientes/entities/cliente.entity';
+import { Proveedor } from './proveedores/entities/proveedor.entity';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { Cliente } from './clientes/entities/cliente.entity';
       username: 'root',
       password: '',
       database: 'san_expedito',
-      entities: [Categoria, Cliente],
+      entities: [Categoria, Cliente, Proveedor],
       synchronize: true
     }), 
     CategoriasModule,
