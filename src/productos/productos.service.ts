@@ -1,41 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { CreateProductoDto } from './dto/create-producto.dto';
 import { UpdateProductoDto } from './dto/update-producto.dto';
-import { Producto } from './entities/producto.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { PrismaClient, Producto } from '@prisma/client';
 
 @Injectable()
 export class ProductosService {
-  constructor(
-    @InjectRepository(Producto)
-    private productoRepository: Repository<Producto>
-  ) {}
+  constructor(private prisma: PrismaClient) {}
 
-  async create(createProductoDto: CreateProductoDto) {
-
-    const categoriaId = createProductoDto.categoriaId;
-    const proveedorId = createProductoDto.proveedorId;
-
-    const categoria = await this.productoRepository
-    .createQueryBuilder('producto')
-    .leftJoinAndSelect('producto.categoria', 'categoria')
-    .where('categoria.id = :categoriaId', { categoriaId })
-    .getOne();
-
-  const proveedor = await this.productoRepository
-    .createQueryBuilder('producto')
-    .leftJoinAndSelect('producto.proveedor', 'proveedor')
-    .where('proveedor.id = :proveedorId', { proveedorId })
-    .getOne();
-
-    console.log({categoria})
-    console.log({proveedor})
-  
-    //createProductoDto.categoriaId = categoria;
-    //createProductoDto.proveedorId = proveedor;
-    //const nuevo_producto = this.productoRepository.create(createProductoDto);
-    //return await this.productoRepository.save(nuevo_producto);
+  async create(createProductoDto: CreateProductoDto): Promise<Producto> {
+    return this.prisma.producto.create({
+      data: {
+        codigo: createProductoDto.codigo,
+        nombre: createProductoDto.nombre,
+        descripcion: createProductoDto.descripcion,
+        cantidad: createProductoDto.cantidad,
+        categoria_id: createProductoDto.categoriaId,
+        proveedor_id: createProductoDto.proveedorId,
+        precio: createProductoDto.precio,
+        unidad_medida: createProductoDto.unidad_medida,
+      },
+    });
   }
 
   findAll() {

@@ -10,13 +10,8 @@ import { ProveedoresModule } from './proveedores/proveedores.module';
 import { FacturasProductosModule } from './facturas_productos/facturas_productos.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { Categoria } from './categorias/entities/categoria.entity';
-import { Cliente } from './clientes/entities/cliente.entity';
-import { Proveedor } from './proveedores/entities/proveedor.entity';
-import { Usuario } from './usuarios/entities/usuario.entity';
-import { Producto } from './productos/entities/producto.entity';
-import { Factura } from './facturas/entities/factura.entity';
-import { FacturasProducto } from './facturas_productos/entities/facturas_producto.entity';
+
+import { PrismaModule } from './prisma.module';
 
 @Module({
   imports: [
@@ -25,18 +20,19 @@ import { FacturasProducto } from './facturas_productos/entities/facturas_product
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: '',
+      password: '1234',
       database: 'san_expedito',
-      entities: [Categoria, Cliente, Proveedor, Usuario, Producto, Factura, FacturasProducto],
-      synchronize: true
-    }), 
+      entities: [],
+      synchronize: true,
+    }),
     CategoriasModule,
     UsuariosModule,
-    FacturasModule, 
-    ClientesModule, 
-    ProductosModule, 
-    ProveedoresModule, 
+    FacturasModule,
+    ClientesModule,
+    ProductosModule,
+    ProveedoresModule,
     FacturasProductosModule,
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

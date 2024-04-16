@@ -1,0 +1,70 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex", "fullTextSearch"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Categoria {
+  id       Int        @id @default(autoincrement())
+  nombre   String     @unique(map: "UX_categoria_nombre") @db.VarChar(255)
+  Producto Producto[]
+}
+
+model Cliente {
+  id       Int       @id @default(autoincrement())
+  nombre   String    @unique
+  apellido String
+  cedula   String
+  factura  Factura[]
+}
+
+model Factura {
+  id               Int                @id @default(autoincrement())
+  cliente_id       Int
+  usuario_id       Int
+  total            Int
+  fecha_creacion   DateTime?          @default(now()) @db.Timestamp(0)
+  usuario          Usuario            @relation(fields: [usuario_id], references: [id])
+  cliente          Cliente            @relation(fields: [cliente_id], references: [id])
+  Factura_Producto Factura_Producto[]
+}
+
+model Factura_Producto {
+  id          Int @id @default(autoincrement())
+  factura_id  Int
+  producto_id Int
+
+  factura  Factura  @relation(fields: [factura_id], references: [id])
+  producto Producto @relation(fields: [producto_id], references: [id])
+}
+
+model Producto {
+  id               Int                @id @default(autoincrement())
+  codigo           String             @unique @db.VarChar(255)
+  nombre           String             @unique @db.VarChar(255)
+  descripcion      String             @db.VarChar(255)
+  cantidad         Int
+  unidad_medida    String             @db.VarChar(255)
+  precio           Int
+  categoria_id     Int
+  proveedor_id     Int
+  Factura_Producto Factura_Producto[]
+  categoria        Categoria          @relation(fields: [categoria_id], references: [id])
+  proveedor        Proveedor          @relation(fields: [proveedor_id], references: [id])
+}
+
+model Proveedor {
+  id       Int        @id @default(autoincrement())
+  nombre   String     @unique @db.VarChar(255)
+  Producto Producto[]
+}
+
+model Usuario {
+  id          Int       @id @default(autoincrement())
+  contrasenya String    @db.VarChar(255)
+  factura     Factura[]
+}
