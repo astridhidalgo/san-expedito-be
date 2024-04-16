@@ -1,7 +1,10 @@
+import { Factura } from 'src/facturas/entities/factura.entity';
+import { Producto } from 'src/productos/entities/producto.entity';
 import {
 	Entity,
 	PrimaryColumn,
-	Column
+	Column,
+    ManyToOne
 } from 'typeorm';
 
 @Entity()
@@ -17,4 +20,10 @@ export class FacturasProducto {
 
     @Column({type: "decimal"})
     precio: number;
+
+    @ManyToOne(() => Producto, (producto) => producto.facturasProducto)
+    producto: Producto;
+
+    @ManyToOne(() => Factura, (factura) => factura.facturasProducto)
+    factura: Factura;
 }

@@ -8,8 +8,9 @@ export class ProductosController {
   constructor(private readonly productosService: ProductosService) {}
 
   @Post()
-  create(@Body() createProductoDto: CreateProductoDto) {
-    return this.productosService.create(createProductoDto);
+  async create(@Body() createProductoDto: CreateProductoDto) {
+    // return createProductoDto
+    return await this.productosService.create(createProductoDto);
   }
 
   @Get()

@@ -1,7 +1,9 @@
+import { Factura } from 'src/facturas/entities/factura.entity';
 import {
 	Entity,
 	PrimaryColumn,
-	Column
+	Column,
+    OneToMany
 } from 'typeorm';
 
 @Entity()
@@ -11,4 +13,7 @@ export class Usuario {
 
     @Column({type: "varchar", length: 255})
     contrasenya: string;
+
+    @OneToMany(() => Factura, (factura) => factura.usuario)
+    factura: Factura[];
 }

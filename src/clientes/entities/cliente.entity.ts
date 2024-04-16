@@ -1,7 +1,9 @@
+import { Factura } from 'src/facturas/entities/factura.entity';
 import {
 	Entity,
 	PrimaryGeneratedColumn,
-	Column
+	Column,
+    OneToMany
 } from 'typeorm';
 
 @Entity()
@@ -17,4 +19,7 @@ export class Cliente {
 
     @Column({type: "varchar", length: 10})
     cedula: string;
+
+    @OneToMany(() => (Factura), (factura) => factura.cliente)
+    factura: Factura;
 }
