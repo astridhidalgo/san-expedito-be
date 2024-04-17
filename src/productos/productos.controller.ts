@@ -9,13 +9,18 @@ export class ProductosController {
 
   @Post()
   async create(@Body() createProductoDto: CreateProductoDto) {
-    // return createProductoDto
     return await this.productosService.create(createProductoDto);
   }
 
   @Get()
   findAll() {
     return this.productosService.findAll();
+  }
+
+  @Get(':codigo')
+  findProductoByCodigo(@Param('codigo') codigo: string) {
+    console.log(codigo);
+    return this.productosService.findProductoByCodigo(codigo);
   }
 
   @Get(':id')

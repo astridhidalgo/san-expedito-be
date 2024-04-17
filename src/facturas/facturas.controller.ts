@@ -17,6 +17,11 @@ export class FacturasController {
     return this.facturasService.findAll();
   }
 
+  @Get('ultimaFactura')
+  finUltimoNumFactura() {
+    return this.facturasService.finUltimoNumFactura();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.facturasService.findOne(+id);

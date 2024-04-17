@@ -24,6 +24,7 @@ model Cliente {
 
 model Factura {
   id               Int                @id @default(autoincrement())
+  numero_factura   String             @unique @db.VarChar(255)
   cliente_id       Int
   usuario_id       Int
   total            Int
@@ -46,14 +47,14 @@ model Producto {
   id               Int                @id @default(autoincrement())
   codigo           String             @unique @db.VarChar(255)
   nombre           String             @unique @db.VarChar(255)
-  descripcion      String             @db.VarChar(255)
+  descripcion      String?            @db.VarChar(255)
   cantidad         Int
   unidad_medida    String             @db.VarChar(255)
   precio           Int
   categoria_id     Int
   proveedor_id     Int
   Factura_Producto Factura_Producto[]
-  categoria        Categoria          @relation(fields: [categoria_id], references: [id])
+  categoria        Categoria?         @relation(fields: [categoria_id], references: [id])
   proveedor        Proveedor          @relation(fields: [proveedor_id], references: [id])
 }
 
@@ -65,6 +66,8 @@ model Proveedor {
 
 model Usuario {
   id          Int       @id @default(autoincrement())
+  nombre      String    @db.VarChar(255)
   contrasenya String    @db.VarChar(255)
+  rol         String    @db.VarChar(255)
   factura     Factura[]
 }

@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ProveedoresService } from './proveedores.service';
 import { ProveedoresController } from './proveedores.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { PrismaModule } from '../prisma.module';
 
 @Module({
-
+  imports: [PrismaModule],
   controllers: [ProveedoresController],
   providers: [ProveedoresService],
 })

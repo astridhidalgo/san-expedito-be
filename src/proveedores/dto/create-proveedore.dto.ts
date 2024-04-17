@@ -1,1 +1,9 @@
-export class CreateProveedoreDto {}
+import { Transform } from 'class-transformer';
+import { IsString, MinLength } from 'class-validator';
+
+export class CreateProveedoreDto {
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(1)
+  nombre: string;
+}

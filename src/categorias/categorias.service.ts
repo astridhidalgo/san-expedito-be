@@ -1,17 +1,31 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCategoriaDto } from './dto/create-categoria.dto';
 import { UpdateCategoriaDto } from './dto/update-categoria.dto';
 import { Categoria, PrismaClient } from '@prisma/client';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { ProductosService } from '../productos/productos.service';
 
 @Injectable()
 export class CategoriasService {
-  constructor(private prisma: PrismaClient) {}
+  constructor(
+    private prisma: PrismaClient,
+    private readonly productosService: ProductosService,
+  ) {}
+
   create(createCategoriaDto: CreateCategoriaDto) {
-    return 'This action adds a new categoria';
+    return this.prisma.categoria.create({
+      data: {
+        nombre: createCategoriaDto.nombre,
+      },
+    });
   }
 
   findAll(): Promise<Categoria[]> {
-    return this.prisma.categoria.findMany();
+    return this.prisma.categoria.findMany({
+      orderBy: {
+        id: 'asc', // Orden ascendente por nombre. Cambia a 'desc' para orden descendente
+      },
+    });
   }
 
   findOne(id: number) {
@@ -22,7 +36,23 @@ export class CategoriasService {
     return `This action updates a #${id} categoria`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} categoria`;
+  async remove(ids: number[]) {
+    let categoriaProductos;
+    const producto = [];
+    for (const id of ids) {
+      categoriaProductos = await this.productosService.findProductosByCategoria(id);
+      producto.push(categoriaProductos.categoria_id);
+    }
+
+    if (categoriaProductos.length > 0) {
+      throw new BadRequestException('la categoria no puede ser eliminada por que tiene registros asociados');
+    }
+    return this.prisma.categoria.deleteMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
   }
 }

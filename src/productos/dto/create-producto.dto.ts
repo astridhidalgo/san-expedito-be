@@ -7,8 +7,7 @@ export class CreateProductoDto {
   @IsNotEmpty()
   nombre: string;
 
-  @IsNotEmpty()
-  descripcion: string;
+  descripcion?: string;
 
   @IsNotEmpty()
   cantidad: number;

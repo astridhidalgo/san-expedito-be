@@ -22,12 +22,43 @@ export class ProductosService {
     });
   }
 
-  findAll() {
-    return `This action returns all productos`;
+  async findAll() {
+    return this.prisma.producto.findMany({
+      orderBy: {
+        nombre: 'asc',
+      },
+      select: {
+        codigo: true,
+        nombre: true,
+        descripcion: true,
+        cantidad: true,
+        precio: true,
+        unidad_medida: true,
+        categoria: {
+          select: {
+            nombre: true,
+          },
+        },
+        proveedor: {
+          select: {
+            nombre: true,
+          },
+        },
+      },
+    });
+  }
+
+  findProductosByCategoria(id: number) {
+    console.log('BUSCO PRODUCTOS');
+    return this.prisma.producto.findFirst({ where: { categoria_id: id } });
   }
 
   findOne(id: number) {
     return `This action returns a #${id} producto`;
+  }
+
+  findProductoByCodigo(codigo: string) {
+    return this.prisma.producto.findFirst({ where: { codigo: codigo } });
   }
 
   update(id: number, updateProductoDto: UpdateProductoDto) {
