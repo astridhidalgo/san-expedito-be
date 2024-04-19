@@ -1,11 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
+import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class ClientesService {
-  create(createClienteDto: CreateClienteDto) {
-    return 'This action adds a new cliente';
+  constructor(private prisma: PrismaClient) {}
+  create(createClienteDto: CreateClienteDto, tx: any) {
+    const connect = tx ? tx : this.prisma;
+    return connect.cliente.create({
+      data: {
+        cedula: createClienteDto.cedula,
+        nombre: createClienteDto.nombre,
+        apellido: createClienteDto.apellido,
+      },
+    });
   }
 
   findAll() {
@@ -14,6 +23,10 @@ export class ClientesService {
 
   findOne(id: number) {
     return `This action returns a #${id} cliente`;
+  }
+
+  finClienteByCedula(ci: string) {
+    return this.prisma.cliente.findFirst({ where: { cedula: ci } });
   }
 
   update(id: number, updateClienteDto: UpdateClienteDto) {

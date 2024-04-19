@@ -54,7 +54,7 @@ export class ProductosService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} producto`;
+    return this.prisma.producto.findUnique({ where: { id }, select: { cantidad: true } });
   }
 
   findProductoByCodigo(codigo: string) {
@@ -63,6 +63,11 @@ export class ProductosService {
 
   update(id: number, updateProductoDto: UpdateProductoDto) {
     return `This action updates a #${id} producto`;
+  }
+
+  updateStock(productoId: number, cantidad, tx: any) {
+    const connect = tx ? tx : this.prisma;
+    return connect.producto.update({ where: { id: productoId }, data: { cantidad } });
   }
 
   remove(id: number) {

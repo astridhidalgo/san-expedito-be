@@ -8,7 +8,7 @@ export class FacturasController {
   constructor(private readonly facturasService: FacturasService) {}
 
   @Post()
-  create(@Body() createFacturaDto: CreateFacturaDto) {
+  async create(@Body() createFacturaDto: CreateFacturaDto) {
     return this.facturasService.create(createFacturaDto);
   }
 

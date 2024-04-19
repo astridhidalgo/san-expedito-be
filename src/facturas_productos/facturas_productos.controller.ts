@@ -9,7 +9,8 @@ export class FacturasProductosController {
 
   @Post()
   create(@Body() createFacturasProductoDto: CreateFacturasProductoDto) {
-    return this.facturasProductosService.create(createFacturasProductoDto);
+    const tx = undefined;
+    return this.facturasProductosService.create(createFacturasProductoDto.factura_id, createFacturasProductoDto.producto_id, tx);
   }
 
   @Get()
