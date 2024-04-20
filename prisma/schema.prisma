@@ -8,66 +8,75 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Categoria {
+model categoria {
   id       Int        @id @default(autoincrement())
   nombre   String     @unique(map: "UX_categoria_nombre") @db.VarChar(255)
-  Producto Producto[]
+  producto producto[]
 }
 
-model Cliente {
+model cliente {
   id       Int       @id @default(autoincrement())
-  nombre   String    @unique
+  nombre   String    @unique(map: "Cliente_nombre_key")
   apellido String
   cedula   String
-  factura  Factura[]
+  factura  factura[]
 }
 
-model Factura {
+model factura {
   id               Int                @id @default(autoincrement())
-  numero_factura   String             @unique @db.VarChar(255)
   cliente_id       Int
   usuario_id       Int
-  total            Int
+  total            Decimal            @db.Decimal(10, 2)
   fecha_creacion   DateTime?          @default(now()) @db.Timestamp(0)
-  usuario          Usuario            @relation(fields: [usuario_id], references: [id])
-  cliente          Cliente            @relation(fields: [cliente_id], references: [id])
-  Factura_Producto Factura_Producto[]
+  numero_factura   String             @unique(map: "Factura_numero_factura_key") @db.VarChar(255)
+  cliente          cliente            @relation(fields: [cliente_id], references: [id], map: "Factura_cliente_id_fkey")
+  usuario          usuario            @relation(fields: [usuario_id], references: [id], map: "Factura_usuario_id_fkey")
+  factura_producto factura_producto[]
+
+  @@index([cliente_id], map: "Factura_cliente_id_fkey")
+  @@index([usuario_id], map: "Factura_usuario_id_fkey")
 }
 
-model Factura_Producto {
-  id          Int @id @default(autoincrement())
+model factura_producto {
+  id          Int      @id @default(autoincrement())
   factura_id  Int
   producto_id Int
+  cantidad    Decimal  @db.Decimal(10, 2)
+  factura     factura  @relation(fields: [factura_id], references: [id], map: "Factura_Producto_factura_id_fkey")
+  producto    producto @relation(fields: [producto_id], references: [id], map: "Factura_Producto_producto_id_fkey")
 
-  factura  Factura  @relation(fields: [factura_id], references: [id])
-  producto Producto @relation(fields: [producto_id], references: [id])
+  @@index([factura_id], map: "Factura_Producto_factura_id_fkey")
+  @@index([producto_id], map: "Factura_Producto_producto_id_fkey")
 }
 
-model Producto {
+model producto {
   id               Int                @id @default(autoincrement())
-  codigo           String             @unique @db.VarChar(255)
-  nombre           String             @unique @db.VarChar(255)
+  codigo           String             @unique(map: "Producto_codigo_key") @db.VarChar(255)
+  nombre           String             @unique(map: "Producto_nombre_key") @db.VarChar(255)
   descripcion      String?            @db.VarChar(255)
-  cantidad         Int
+  cantidad         Decimal            @db.Decimal(10, 2)
   unidad_medida    String             @db.VarChar(255)
-  precio           Int
+  precio           Decimal            @db.Decimal(10, 2)
   categoria_id     Int
   proveedor_id     Int
-  Factura_Producto Factura_Producto[]
-  categoria        Categoria?         @relation(fields: [categoria_id], references: [id])
-  proveedor        Proveedor          @relation(fields: [proveedor_id], references: [id])
+  factura_producto factura_producto[]
+  categoria        categoria          @relation(fields: [categoria_id], references: [id], map: "Producto_categoria_id_fkey")
+  proveedor        proveedor          @relation(fields: [proveedor_id], references: [id], map: "Producto_proveedor_id_fkey")
+
+  @@index([categoria_id], map: "Producto_categoria_id_fkey")
+  @@index([proveedor_id], map: "Producto_proveedor_id_fkey")
 }
 
-model Proveedor {
+model proveedor {
   id       Int        @id @default(autoincrement())
-  nombre   String     @unique @db.VarChar(255)
-  Producto Producto[]
+  nombre   String     @unique(map: "Proveedor_nombre_key") @db.VarChar(255)
+  producto producto[]
 }
 
-model Usuario {
+model usuario {
   id          Int       @id @default(autoincrement())
-  nombre      String    @db.VarChar(255)
   contrasenya String    @db.VarChar(255)
+  nombre      String    @db.VarChar(255)
   rol         String    @db.VarChar(255)
-  factura     Factura[]
+  factura     factura[]
 }

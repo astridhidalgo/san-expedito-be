@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { FacturasService } from './facturas.service';
 import { CreateFacturaDto } from './dto/create-factura.dto';
 import { UpdateFacturaDto } from './dto/update-factura.dto';
@@ -13,8 +13,9 @@ export class FacturasController {
   }
 
   @Get()
-  findAll() {
-    return this.facturasService.findAll();
+  findAll(@Query('orderBy') orderBy: string, @Query('fechaInicio') fechaInicio: string, @Query('fechaFin') fechaFin: string) {
+    const orden = 'desc';
+    return this.facturasService.findAll(orderBy, orden, fechaInicio, fechaFin);
   }
 
   @Get('ultimaFactura')

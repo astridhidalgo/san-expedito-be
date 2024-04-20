@@ -33,9 +33,9 @@ export class FacturasService {
           },
         });
         for (const producto of createFacturaDto.productos) {
-          await this.facturasProductos.create(factura.id, Number(producto.id), tx);
+          await this.facturasProductos.create(factura.id, Number(producto.id), Number(producto.cantidad), tx);
           const stockProducto = await this.productosService.findOne(Number(producto.id));
-          const stockCalculado = stockProducto.cantidad - Number(producto.cantidad);
+          const stockCalculado = Number(stockProducto.cantidad) - Number(producto.cantidad);
           await this.productosService.updateStock(Number(producto.id), stockCalculado, tx);
         }
         console.log('factura creada con  exito');
@@ -46,16 +46,65 @@ export class FacturasService {
     }
   }
 
-  findAll() {
-    return this.prisma.factura.findMany({
+  findAll(orderBy, orden, startDate, endDate) {
+    if (orderBy === undefined) {
+      orderBy = 'numero_factura';
+    }
+    let orderByField;
+    if (orderBy.toLowerCase() === 'fecha') {
+      orderByField = 'fecha';
+    } else {
+      orderByField = 'numero_factura';
+    }
+
+    const prismaQuery = {
       include: {
+        cliente: true,
         Factura_Producto: true,
       },
+      orderBy: { [orderByField]: orden },
+      where: undefined,
+    };
+
+    if (startDate && endDate) {
+      prismaQuery.where = {
+        fecha_creacion: {
+          gte: new Date(startDate),
+          lte: new Date(endDate),
+        },
+      };
+    }
+
+    return this.prisma.factura.findMany(prismaQuery).then((facturas) => {
+      // Procesa las facturas para contar los productos en cada una
+      const facturasConProductos = facturas.map((factura) => {
+        const cantidadProductos = factura.Factura_Producto.length;
+        return {
+          ...factura,
+          cantidadProductos,
+        };
+      });
+      return facturasConProductos;
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} factura`;
+  async findOne(id: number): Promise<any> {
+    const factura = await this.prisma.factura.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        cliente: true,
+        Factura_Producto: { include: { producto: true } },
+      },
+    });
+    let cantidadProductos = 0;
+    factura.Factura_Producto.forEach((producto) => {
+      // Sumar la cantidad del producto actual a la suma total
+      cantidadProductos += Number(producto.cantidad);
+    });
+
+    return { ...factura, cantidadProductos };
   }
 
   update(id: number, updateFacturaDto: UpdateFacturaDto) {

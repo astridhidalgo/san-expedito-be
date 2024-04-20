@@ -17,6 +17,11 @@ export class ProductosController {
     return this.productosService.findAll();
   }
 
+  @Get('contador')
+  async contadorProductos() {
+    return await this.productosService.contadorProductos();
+  }
+
   @Get(':codigo')
   findProductoByCodigo(@Param('codigo') codigo: string) {
     console.log(codigo);
@@ -35,6 +40,6 @@ export class ProductosController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.productosService.remove(+id);
+    return this.productosService.remove(Number(id));
   }
 }

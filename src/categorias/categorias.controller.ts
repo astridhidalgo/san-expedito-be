@@ -27,9 +27,8 @@ export class CategoriasController {
     return this.categoriasService.update(+id, updateCategoriaDto);
   }
 
-  @Delete()
-  remove(@Body() body: { ids: number[] }) {
-    const { ids } = body;
-    return this.categoriasService.remove(ids);
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.categoriasService.remove(Number(id));
   }
 }

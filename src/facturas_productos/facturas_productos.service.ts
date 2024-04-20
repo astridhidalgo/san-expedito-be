@@ -7,13 +7,14 @@ import { PrismaClient } from '@prisma/client';
 @Injectable()
 export class FacturasProductosService {
   constructor(private prisma: PrismaClient) {}
-  async create(facturaId: number, productoId: number, tx: any): Promise<void> {
+  async create(facturaId: number, productoId: number, cantidad: number, tx: any): Promise<void> {
     const connect = tx ? tx : this.prisma;
     try {
       await connect.factura_Producto.create({
         data: {
           factura_id: facturaId,
           producto_id: productoId,
+          cantidad: cantidad,
         },
       });
       console.log('Relación factura-producto creada correctamente');
@@ -37,5 +38,9 @@ export class FacturasProductosService {
 
   remove(id: number) {
     return `This action removes a #${id} facturasProducto`;
+  }
+
+  async findFacturasByProductoId(id: number) {
+    return this.prisma.factura_Producto.findMany({ where: { producto_id: id } });
   }
 }

@@ -4,9 +4,10 @@ import { ProductosController } from './productos.controller';
 
 import { Repository } from 'typeorm';
 import { PrismaModule } from '../prisma.module';
+import { FacturasProductosModule } from '../facturas_productos/facturas_productos.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, FacturasProductosModule],
   controllers: [ProductosController],
   providers: [ProductosService, Repository],
   exports: [ProductosService],

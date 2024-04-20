@@ -36,22 +36,14 @@ export class CategoriasService {
     return `This action updates a #${id} categoria`;
   }
 
-  async remove(ids: number[]) {
-    let categoriaProductos;
-    const producto = [];
-    for (const id of ids) {
-      categoriaProductos = await this.productosService.findProductosByCategoria(id);
-      producto.push(categoriaProductos.categoria_id);
-    }
-
-    if (categoriaProductos.length > 0) {
+  async remove(id: number): Promise<void> {
+    const categoriaProductos = await this.productosService.findProductosByCategoria(id);
+    if (categoriaProductos) {
       throw new BadRequestException('la categoria no puede ser eliminada por que tiene registros asociados');
     }
-    return this.prisma.categoria.deleteMany({
+    await this.prisma.categoria.delete({
       where: {
-        id: {
-          in: ids,
-        },
+        id: id,
       },
     });
   }

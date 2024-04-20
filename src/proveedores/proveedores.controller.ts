@@ -28,7 +28,7 @@ export class ProveedoresController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.proveedoresService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.proveedoresService.remove(Number(id));
   }
 }
