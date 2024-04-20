@@ -19,8 +19,8 @@ export class CreateProductoDto {
   precio: number;
 
   @IsNotEmpty()
-  proveedorId: number | null;
+  proveedor_id: number | null;
 
   @IsNotEmpty()
-  categoriaId: number | null;
+  categoria_id: number | null;
 }

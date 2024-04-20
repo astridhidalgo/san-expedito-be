@@ -60,7 +60,7 @@ export class FacturasService {
     const prismaQuery = {
       include: {
         cliente: true,
-        Factura_Producto: true,
+        factura_producto: true,
       },
       orderBy: { [orderByField]: orden },
       where: undefined,
@@ -78,7 +78,7 @@ export class FacturasService {
     return this.prisma.factura.findMany(prismaQuery).then((facturas) => {
       // Procesa las facturas para contar los productos en cada una
       const facturasConProductos = facturas.map((factura) => {
-        const cantidadProductos = factura.Factura_Producto.length;
+        const cantidadProductos = factura.factura_producto.length;
         return {
           ...factura,
           cantidadProductos,
@@ -95,11 +95,11 @@ export class FacturasService {
       },
       include: {
         cliente: true,
-        Factura_Producto: { include: { producto: true } },
+        factura_producto: { include: { producto: true } },
       },
     });
     let cantidadProductos = 0;
-    factura.Factura_Producto.forEach((producto) => {
+    factura.factura_producto.forEach((producto) => {
       // Sumar la cantidad del producto actual a la suma total
       cantidadProductos += Number(producto.cantidad);
     });

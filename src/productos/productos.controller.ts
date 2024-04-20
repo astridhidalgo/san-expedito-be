@@ -17,6 +17,12 @@ export class ProductosController {
     return this.productosService.findAll();
   }
 
+  @Get('detalle/:id') // Cambiado el patrón de la ruta
+  async findProductoById(@Param('id') id: string) {
+    console.log('controlador');
+    return await this.productosService.findProductoById(Number(id));
+  }
+
   @Get('contador')
   async contadorProductos() {
     return await this.productosService.contadorProductos();
@@ -28,14 +34,9 @@ export class ProductosController {
     return this.productosService.findProductoByCodigo(codigo);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productosService.findOne(+id);
-  }
-
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProductoDto: UpdateProductoDto) {
-    return this.productosService.update(+id, updateProductoDto);
+    return this.productosService.update(Number(id), updateProductoDto);
   }
 
   @Delete(':id')

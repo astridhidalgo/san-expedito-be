@@ -1,8 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCategoriaDto } from './dto/create-categoria.dto';
 import { UpdateCategoriaDto } from './dto/update-categoria.dto';
-import { Categoria, PrismaClient } from '@prisma/client';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { PrismaClient } from '@prisma/client';
 import { ProductosService } from '../productos/productos.service';
 
 @Injectable()
@@ -20,7 +19,7 @@ export class CategoriasService {
     });
   }
 
-  findAll(): Promise<Categoria[]> {
+  findAll() {
     return this.prisma.categoria.findMany({
       orderBy: {
         id: 'asc', // Orden ascendente por nombre. Cambia a 'desc' para orden descendente

@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFacturasProductoDto } from './dto/create-facturas_producto.dto';
 import { UpdateFacturasProductoDto } from './dto/update-facturas_producto.dto';
-import { ClientesService } from '../clientes/clientes.service';
 import { PrismaClient } from '@prisma/client';
 
 @Injectable()
@@ -41,6 +39,6 @@ export class FacturasProductosService {
   }
 
   async findFacturasByProductoId(id: number) {
-    return this.prisma.factura_Producto.findMany({ where: { producto_id: id } });
+    return this.prisma.factura_producto.findMany({ where: { producto_id: id } });
   }
 }

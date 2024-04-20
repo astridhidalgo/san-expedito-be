@@ -57,11 +57,11 @@ model producto {
   cantidad         Decimal            @db.Decimal(10, 2)
   unidad_medida    String             @db.VarChar(255)
   precio           Decimal            @db.Decimal(10, 2)
-  categoria_id     Int
-  proveedor_id     Int
+  categoria_id     Int?
+  proveedor_id     Int?
   factura_producto factura_producto[]
-  categoria        categoria          @relation(fields: [categoria_id], references: [id], map: "Producto_categoria_id_fkey")
-  proveedor        proveedor          @relation(fields: [proveedor_id], references: [id], map: "Producto_proveedor_id_fkey")
+  categoria        categoria?         @relation(fields: [categoria_id], references: [id], map: "Producto_categoria_id_fkey", onDelete: SetNull)
+  proveedor        proveedor?         @relation(fields: [proveedor_id], references: [id], map: "Producto_proveedor_id_fkey", onDelete: SetNull)
 
   @@index([categoria_id], map: "Producto_categoria_id_fkey")
   @@index([proveedor_id], map: "Producto_proveedor_id_fkey")

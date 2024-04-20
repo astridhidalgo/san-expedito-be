@@ -1,8 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateProductoDto } from './dto/create-producto.dto';
 import { UpdateProductoDto } from './dto/update-producto.dto';
-import { PrismaClient, Producto } from '@prisma/client';
-
+import { PrismaClient, producto } from '@prisma/client';
 import { FacturasProductosService } from '../facturas_productos/facturas_productos.service';
 
 @Injectable()
@@ -12,15 +11,15 @@ export class ProductosService {
     private readonly facturasProductosService: FacturasProductosService,
   ) {}
 
-  async create(createProductoDto: CreateProductoDto): Promise<Producto> {
+  async create(createProductoDto: CreateProductoDto): Promise<producto> {
     return this.prisma.producto.create({
       data: {
         codigo: createProductoDto.codigo,
         nombre: createProductoDto.nombre,
         descripcion: createProductoDto.descripcion,
         cantidad: createProductoDto.cantidad,
-        categoria_id: createProductoDto.categoriaId,
-        proveedor_id: createProductoDto.proveedorId,
+        categoria_id: createProductoDto.categoria_id,
+        proveedor_id: createProductoDto.proveedor_id,
         precio: createProductoDto.precio,
         unidad_medida: createProductoDto.unidad_medida,
       },
@@ -66,8 +65,11 @@ export class ProductosService {
     return this.prisma.producto.findFirst({ where: { codigo: codigo } });
   }
 
-  update(id: number, updateProductoDto: UpdateProductoDto) {
-    return `This action updates a #${id} producto`;
+  async update(id: number, updateProductoDto: UpdateProductoDto) {
+    return this.prisma.producto.update({
+      where: { id: id },
+      data: updateProductoDto,
+    });
   }
 
   updateStock(productoId: number, cantidad, tx: any) {
@@ -99,5 +101,16 @@ export class ProductosService {
       console.error('Error al contar los productos:', error);
       throw error; // Opcional: puedes lanzar el error para que sea manejado en otra parte de tu aplicación
     }
+  }
+
+  async findProductoById(id: number) {
+    console.log(id);
+    return this.prisma.producto.findUnique({
+      where: { id: id },
+      include: {
+        categoria: true,
+        proveedor: true,
+      },
+    });
   }
 }
