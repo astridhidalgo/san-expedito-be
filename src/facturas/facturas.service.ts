@@ -28,11 +28,11 @@ export class FacturasService {
             cliente_id: cliente.id,
             usuario_id: usuario_id,
             total: Number(createFacturaDto.total),
-            fecha_creacion: new Date(createFacturaDto.fecha),
             numero_factura: createFacturaDto.numero_factura,
           },
         });
         for (const producto of createFacturaDto.productos) {
+          console.log(factura);
           await this.facturasProductos.create(factura.id, Number(producto.id), Number(producto.cantidad), tx);
           const stockProducto = await this.productosService.findOne(Number(producto.id));
           const stockCalculado = Number(stockProducto.cantidad) - Number(producto.cantidad);

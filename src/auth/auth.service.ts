@@ -20,10 +20,14 @@ export class AuthService {
     return await this.usuariosService.create({ nombre, contrasenya: await bcryptjs.hash(contrasenya, 10) });
   }
 
-  async login({ nombre, contrasenya }: LoginDto) {
+  async login({ nombre, contrasenya, rol }: LoginDto) {
     const usuario = await this.usuariosService.findUsuarioByNombre(nombre);
     if (!usuario) {
       throw new UnauthorizedException('usuario no existe');
+    }
+
+    if (usuario.rol !== rol) {
+      throw new UnauthorizedException('rol no es correcto');
     }
     const isContrasenyaValida = await bcryptjs.compare(contrasenya, usuario.contrasenya);
     if (!isContrasenyaValida) {

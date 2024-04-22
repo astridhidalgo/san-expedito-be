@@ -19,11 +19,11 @@ export class ProveedoresService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} proveedore`;
+    return this.prisma.proveedor.findUnique({ where: { id } });
   }
 
   update(id: number, updateProveedoreDto: UpdateProveedoreDto) {
-    return `This action updates a #${id} proveedore`;
+    return this.prisma.proveedor.update({ where: { id }, data: { nombre: updateProveedoreDto.nombre } });
   }
 
   async remove(id: number): Promise<void> {

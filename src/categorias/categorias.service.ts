@@ -11,7 +11,7 @@ export class CategoriasService {
     private readonly productosService: ProductosService,
   ) {}
 
-  create(createCategoriaDto: CreateCategoriaDto) {
+  async create(createCategoriaDto: CreateCategoriaDto) {
     return this.prisma.categoria.create({
       data: {
         nombre: createCategoriaDto.nombre,
@@ -19,7 +19,7 @@ export class CategoriasService {
     });
   }
 
-  findAll() {
+  async findAll() {
     return this.prisma.categoria.findMany({
       orderBy: {
         id: 'asc', // Orden ascendente por nombre. Cambia a 'desc' para orden descendente
@@ -27,12 +27,15 @@ export class CategoriasService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} categoria`;
+  async findOne(id: number) {
+    return this.prisma.categoria.findUnique({ where: { id } });
   }
 
-  update(id: number, updateCategoriaDto: UpdateCategoriaDto) {
-    return `This action updates a #${id} categoria`;
+  async update(id: number, updateCategoriaDto: UpdateCategoriaDto) {
+    return this.prisma.categoria.update({
+      where: { id },
+      data: { nombre: updateCategoriaDto.nombre },
+    });
   }
 
   async remove(id: number): Promise<void> {

@@ -8,23 +8,23 @@ export class CategoriasController {
   constructor(private readonly categoriasService: CategoriasService) {}
 
   @Post()
-  create(@Body() createCategoriaDto: CreateCategoriaDto) {
-    return this.categoriasService.create(createCategoriaDto);
+  async create(@Body() createCategoriaDto: CreateCategoriaDto) {
+    return await this.categoriasService.create(createCategoriaDto);
   }
 
   @Get()
-  findAll() {
-    return this.categoriasService.findAll();
+  async findAll() {
+    return await this.categoriasService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoriasService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await await this.categoriasService.findOne(Number(id));
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoriaDto: UpdateCategoriaDto) {
-    return this.categoriasService.update(+id, updateCategoriaDto);
+  async update(@Param('id') id: string, @Body() updateCategoriaDto: UpdateCategoriaDto) {
+    return await this.categoriasService.update(Number(id), updateCategoriaDto);
   }
 
   @Delete(':id')

@@ -10,4 +10,6 @@ export class LoginDto {
   @IsString({ message: 'contrasenya es un string' })
   @MinLength(1, { message: 'contrasenya no puede estar vacio' })
   contrasenya: string;
+
+  rol: string;
 }

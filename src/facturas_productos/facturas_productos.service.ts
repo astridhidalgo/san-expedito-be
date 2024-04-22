@@ -6,9 +6,14 @@ import { PrismaClient } from '@prisma/client';
 export class FacturasProductosService {
   constructor(private prisma: PrismaClient) {}
   async create(facturaId: number, productoId: number, cantidad: number, tx: any): Promise<void> {
+    console.log({
+      facturaId,
+      productoId,
+      cantidad,
+    });
     const connect = tx ? tx : this.prisma;
     try {
-      await connect.factura_Producto.create({
+      await connect.factura_producto.create({
         data: {
           factura_id: facturaId,
           producto_id: productoId,

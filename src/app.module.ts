@@ -13,6 +13,7 @@ import { DataSource } from 'typeorm';
 
 import { PrismaModule } from './prisma.module';
 import { AuthModule } from './auth/auth.module';
+import { PdfModule } from './pdf/pdf.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { AuthModule } from './auth/auth.module';
     FacturasProductosModule,
     PrismaModule,
     AuthModule,
+    PdfModule,
   ],
   controllers: [AppController],
   providers: [AppService],

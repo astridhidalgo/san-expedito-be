@@ -31,7 +31,11 @@
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "handlebars": "^4.7.8",
+    "html-pdf": "^3.0.1",
     "mysql2": "^3.9.4",
+    "pdfkit": "^0.15.0",
+    "pdfmake": "^0.2.10",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"
   },

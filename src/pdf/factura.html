@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Factura</title>
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          padding: 20px;
+      }
+      .header {
+          text-align: right;
+      }
+      .cliente {
+          text-align: left;
+          margin-bottom: 20px;
+      }
+      .detalle-factura {
+          margin-bottom: 20px;
+          border-collapse: collapse;
+          width: 100%;
+      }
+      .detalle-factura th, .detalle-factura td {
+          border: 1px solid #dddddd;
+          padding: 8px;
+          text-align: center;
+      }
+      .total {
+          text-align: right;
+          font-weight: bold;
+      }
+  </style>
+</head>
+<body>
+<div class="header">
+  <p>Factura No: {{ numeroFactura }}</p>
+</div>
+<div class="cliente">
+  <p>Cédula: {{ cedula }}</p>
+  <p>Nombre: {{ nombre }}</p>
+  <p>Apellido: {{ apellido }}</p>
+</div>
+<table class="detalle-factura">
+  <thead>
+  <tr>
+    <th>Código</th>
+    <th>Item</th>
+    <th>Cantidad</th>
+    <th>Precio</th>
+  </tr>
+  </thead>
+  <tbody>
+  {{#each items}}
+  <tr>
+    <td>{{ codigo }}</td>
+    <td>{{ item }}</td>
+    <td>{{ cantidad }}</td>
+    <td>{{ precio }}</td>
+  </tr>
+  {{/each}}
+  </tbody>
+</table>
+<div class="total">
+  <p>Total: {{ total }}</p>
+</div>
+</body>
+</html>
