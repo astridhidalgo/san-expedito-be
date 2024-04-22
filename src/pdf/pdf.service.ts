@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as pdf from 'html-pdf';
 @Injectable()
 export class PdfService {
-  async generatePdf(htmlContent: CreateFacturaDto): Promise<{ url: string }> {
+  async generatePdf(htmlContent: CreateFacturaDto): Promise<any> {
     const datosFactura = {
       numeroFactura: htmlContent.numero_factura,
       cedula: htmlContent.cliente.cedula,
@@ -21,7 +21,7 @@ export class PdfService {
     };
 
     // Lee el contenido del archivo HTML de la plantilla
-    const htmlTemplate = fs.readFileSync('C:\\CURSOS\\leonardo\\san_expedito_be\\src\\pdf\\factura.html', 'utf-8');
+    const htmlTemplate = fs.readFileSync('src/pdf/factura.html', 'utf-8');
 
     // Compila la plantilla
     const template = Handlebars.compile(htmlTemplate);
@@ -32,11 +32,13 @@ export class PdfService {
     // Guarda el HTML renderizado en un archivo
     fs.writeFileSync('factura.html', facturaHtml);
 
-    const htmlFilePath = 'C:\\CURSOS\\leonardo\\san_expedito_be\\factura.html';
+    const htmlFilePath = 'factura.html'; //ruta donde generara el html con los datos de la factura
     const options = { format: 'Letter' };
-    const outputPath = 'C:\\xampp\\htdocs\\sgi5\\factura.pdf';
+
+    const outputPath = 'C:\\xampp\\htdocs\\factura.pdf'; //ruta donde guardara el pdf
     await this.generatePdfFromFile(htmlFilePath, options, outputPath);
     return { url: 'file:///' + outputPath };
+    //return { url: 'PDF generado exitosamente.' };
   }
 
   async generatePdfFromFile(htmlFilePath: string, options: pdf.CreateOptions, outputPath: string): Promise<string> {
