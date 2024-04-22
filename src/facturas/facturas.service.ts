@@ -22,11 +22,10 @@ export class FacturasService {
         if (!cliente) {
           cliente = await this.clientesService.create(createFacturaDto.cliente, tx);
         }
-        const usuario_id = 2;
+
         const factura = await tx.factura.create({
           data: {
             cliente_id: cliente.id,
-            usuario_id: usuario_id,
             total: Number(createFacturaDto.total),
             numero_factura: createFacturaDto.numero_factura,
           },

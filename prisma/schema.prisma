@@ -25,16 +25,15 @@ model cliente {
 model factura {
   id               Int                @id @default(autoincrement())
   cliente_id       Int
-  usuario_id       Int
   total            Decimal            @db.Decimal(10, 2)
   fecha_creacion   DateTime           @default(now()) @db.Timestamp(0)
   numero_factura   String             @unique(map: "Factura_numero_factura_key") @db.VarChar(255)
   cliente          cliente            @relation(fields: [cliente_id], references: [id], map: "Factura_cliente_id_fkey")
-  usuario          usuario            @relation(fields: [usuario_id], references: [id], map: "Factura_usuario_id_fkey")
   factura_producto factura_producto[]
+  usuario          usuario?           @relation(fields: [usuarioId], references: [id])
+  usuarioId        Int?
 
   @@index([cliente_id], map: "Factura_cliente_id_fkey")
-  @@index([usuario_id], map: "Factura_usuario_id_fkey")
 }
 
 model factura_producto {
