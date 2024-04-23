@@ -35,7 +35,8 @@ export class PdfService {
     const htmlFilePath = 'factura.html'; //ruta donde generara el html con los datos de la factura
     const options = { format: 'Letter' };
 
-    const outputPath = 'C:\\xampp\\htdocs\\factura.pdf'; //ruta donde guardara el pdf
+    //const outputPath = 'C:\\xampp\\htdocs\\factura.pdf'; //ruta original
+    const outputPath = 'C:\\xampp\\htdocs\\localsites\\sgi5\\factura.pdf'; //ruta donde guardara el pdf
     await this.generatePdfFromFile(htmlFilePath, options, outputPath);
     return { url: 'file:///' + outputPath };
     //return { url: 'PDF generado exitosamente.' };
