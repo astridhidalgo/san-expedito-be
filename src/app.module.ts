@@ -22,7 +22,7 @@ import { PdfModule } from './pdf/pdf.module';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: '1234',
+      password: '',
       database: 'san_expedito',
       entities: [],
       synchronize: true,
