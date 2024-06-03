@@ -8,6 +8,7 @@ export class PdfController {
 
   @Post()
   async generatePdf(@Body() createFacturaDto: CreateFacturaDto): Promise<{ url: string }> {
+    console.log(createFacturaDto);
     return this.pdfService.generatePdf(createFacturaDto);
   }
 }

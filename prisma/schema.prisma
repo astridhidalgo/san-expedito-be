@@ -37,12 +37,13 @@ model factura {
 }
 
 model factura_producto {
-  id          Int      @id @default(autoincrement())
-  factura_id  Int
-  producto_id Int
-  cantidad    Decimal  @db.Decimal(10, 2)
-  factura     factura  @relation(fields: [factura_id], references: [id], map: "Factura_Producto_factura_id_fkey")
-  producto    producto @relation(fields: [producto_id], references: [id], map: "Factura_Producto_producto_id_fkey")
+  id               Int      @id @default(autoincrement())
+  factura_id       Int
+  producto_id      Int
+  cantidad         Decimal  @db.Decimal(10, 2)
+  totalPorProducto Decimal? @db.Decimal(10, 2)
+  factura          factura  @relation(fields: [factura_id], references: [id], map: "Factura_Producto_factura_id_fkey")
+  producto         producto @relation(fields: [producto_id], references: [id], map: "Factura_Producto_producto_id_fkey")
 
   @@index([factura_id], map: "Factura_Producto_factura_id_fkey")
   @@index([producto_id], map: "Factura_Producto_producto_id_fkey")

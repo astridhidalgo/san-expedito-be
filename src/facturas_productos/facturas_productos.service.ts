@@ -5,12 +5,7 @@ import { PrismaClient } from '@prisma/client';
 @Injectable()
 export class FacturasProductosService {
   constructor(private prisma: PrismaClient) {}
-  async create(facturaId: number, productoId: number, cantidad: number, tx: any): Promise<void> {
-    console.log({
-      facturaId,
-      productoId,
-      cantidad,
-    });
+  async create(facturaId: number, productoId: number, cantidad: number, totalPorProducto: number, tx: any): Promise<void> {
     const connect = tx ? tx : this.prisma;
     try {
       await connect.factura_producto.create({
@@ -18,6 +13,7 @@ export class FacturasProductosService {
           factura_id: facturaId,
           producto_id: productoId,
           cantidad: cantidad,
+          totalPorProducto,
         },
       });
       console.log('Relación factura-producto creada correctamente');
@@ -33,10 +29,6 @@ export class FacturasProductosService {
 
   findOne(id: number) {
     return `This action returns a #${id} facturasProducto`;
-  }
-
-  update(id: number, updateFacturasProductoDto: UpdateFacturasProductoDto) {
-    return `This action updates a #${id} facturasProducto`;
   }
 
   remove(id: number) {

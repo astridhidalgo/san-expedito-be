@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateFacturaDto } from './dto/create-factura.dto';
-import { UpdateFacturaDto } from './dto/update-factura.dto';
 import { PrismaClient } from '@prisma/client';
 import { ClientesService } from '../clientes/clientes.service';
 import { FacturasProductosService } from '../facturas_productos/facturas_productos.service';
@@ -22,7 +21,6 @@ export class FacturasService {
         if (!cliente) {
           cliente = await this.clientesService.create(createFacturaDto.cliente, tx);
         }
-
         const factura = await tx.factura.create({
           data: {
             cliente_id: cliente.id,
@@ -32,7 +30,7 @@ export class FacturasService {
         });
         for (const producto of createFacturaDto.productos) {
           console.log(factura);
-          await this.facturasProductos.create(factura.id, Number(producto.id), Number(producto.cantidad), tx);
+          await this.facturasProductos.create(factura.id, Number(producto.id), Number(producto.cantidad), Number(producto.totalPorProducto), tx);
           const stockProducto = await this.productosService.findOne(Number(producto.id));
           const stockCalculado = Number(stockProducto.cantidad) - Number(producto.cantidad);
           await this.productosService.updateStock(Number(producto.id), stockCalculado, tx);
@@ -99,17 +97,10 @@ export class FacturasService {
     });
     let cantidadProductos = 0;
     factura.factura_producto.forEach((producto) => {
-      // Sumar la cantidad del producto actual a la suma total
       cantidadProductos += Number(producto.cantidad);
     });
-
     return { ...factura, cantidadProductos };
   }
-
-  update(id: number, updateFacturaDto: UpdateFacturaDto) {
-    return `This action updates a #${id} factura`;
-  }
-
   remove(id: number) {
     return `This action removes a #${id} factura`;
   }

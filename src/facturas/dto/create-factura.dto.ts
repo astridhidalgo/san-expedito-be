@@ -14,4 +14,5 @@ export class ProductoFacturaDto {
   nombre: string;
   cantidad: string;
   precio: string;
+  totalPorProducto: string;
 }

@@ -16,9 +16,12 @@ export class PdfService {
         item: producto.nombre,
         cantidad: producto.cantidad,
         precio: producto.precio,
+        totalPorProducto: producto.totalPorProducto,
       })),
       total: htmlContent.total,
     };
+
+    console.log(datosFactura);
 
     // Lee el contenido del archivo HTML de la plantilla
     const htmlTemplate = fs.readFileSync('src/pdf/factura.html', 'utf-8');
