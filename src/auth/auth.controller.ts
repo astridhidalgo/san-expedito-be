@@ -4,12 +4,16 @@ import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto';
 import { LoginDto } from './dto/login.dto';
 import { Rol } from './enums/rol.enum';
 import { Auth } from './decoradores/auth.decorator';
+import { UsuariosService } from '../usuarios/usuarios.service';
 
-@Controller('auth')
+@Controller('usuarios')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly usuariosService: UsuariosService,
+  ) {}
 
-  @Post('registro')
+  @Post()
   register(@Body() registroDto: CreateUsuarioDto) {
     return this.authService.registro(registroDto);
   }

@@ -11,4 +11,8 @@ export class CreateUsuarioDto {
   @IsString()
   @MinLength(6)
   contrasenya: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  rol: string;
 }

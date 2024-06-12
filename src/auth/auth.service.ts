@@ -12,12 +12,12 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async registro({ nombre, contrasenya }: CreateUsuarioDto) {
+  async registro({ nombre, contrasenya, rol }: CreateUsuarioDto) {
     const usuario = await this.usuariosService.findUsuarioByNombre(nombre);
     if (usuario) {
       throw new BadRequestException('usuario ya existe');
     }
-    return await this.usuariosService.create({ nombre, contrasenya: await bcryptjs.hash(contrasenya, 10) });
+    return await this.usuariosService.create({ nombre, contrasenya: await bcryptjs.hash(contrasenya, 10) }, rol);
   }
 
   async login({ nombre, contrasenya, rol }: LoginDto) {

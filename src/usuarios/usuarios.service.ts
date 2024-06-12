@@ -5,12 +5,12 @@ import { PrismaClient } from '@prisma/client';
 @Injectable()
 export class UsuariosService {
   constructor(private readonly prisma: PrismaClient) {}
-  async create(data: { nombre: string; contrasenya: string }) {
+  async create(data: { nombre: string; contrasenya: string }, rol: string) {
     return this.prisma.usuario.create({
       data: {
         nombre: data.nombre,
         contrasenya: data.contrasenya,
-        rol: 'admin',
+        rol: rol,
       },
     });
   }
