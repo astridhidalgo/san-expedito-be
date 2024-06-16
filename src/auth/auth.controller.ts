@@ -5,6 +5,7 @@ import { LoginDto } from './dto/login.dto';
 import { Rol } from './enums/rol.enum';
 import { Auth } from './decoradores/auth.decorator';
 import { UsuariosService } from '../usuarios/usuarios.service';
+import { RecuperacionContraseniaDto } from '../usuarios/dto/recuperacionContraseña.dto';
 
 @Controller('usuarios')
 export class AuthController {
@@ -20,6 +21,11 @@ export class AuthController {
   @Post('login')
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
+  }
+
+  @Post('recuperacion')
+  recuperarContraseña(@Body() recuperacionContrasenia: RecuperacionContraseniaDto) {
+    return this.authService.recuperacion(recuperacionContrasenia);
   }
 
   // @Get('perfil')

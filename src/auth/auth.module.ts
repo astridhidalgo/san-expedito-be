@@ -4,9 +4,12 @@ import { AuthService } from './auth.service';
 import { UsuariosModule } from '../usuarios/usuarios.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants/jwt.constants';
+import { MailModule } from '../mail/mail.module';
+import { MailService } from '../mail/mail.service';
 
 @Module({
   imports: [
+    MailModule,
     UsuariosModule,
     JwtModule.register({
       global: true,
@@ -15,6 +18,6 @@ import { jwtConstants } from './constants/jwt.constants';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, MailService],
 })
 export class AuthModule {}

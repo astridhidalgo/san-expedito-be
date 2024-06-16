@@ -74,9 +74,15 @@ model proveedor {
 }
 
 model usuario {
-  id          Int       @id @default(autoincrement())
-  contrasenya String    @db.VarChar(255)
-  nombre      String    @db.VarChar(255)
-  rol         String    @db.VarChar(255)
-  factura     factura[]
+  id            Int       @id @default(autoincrement())
+  contrasenya   String    @db.VarChar(255)
+  nombre        String    @db.VarChar(255)
+  apellido      String    @db.VarChar(255)
+  nombreUsuario String    @db.VarChar(255)
+  email         String    @db.VarChar(255)
+  rol           String    @db.VarChar(255)
+  factura       factura[]
+
+  @@unique([nombreUsuario])
+  @@unique([rol, nombreUsuario])
 }

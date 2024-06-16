@@ -1,17 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { PrismaClient } from '@prisma/client';
+import { CreateUsuarioDto } from './dto/create-usuario.dto';
 
 @Injectable()
 export class UsuariosService {
   constructor(private readonly prisma: PrismaClient) {}
-  async create(data: { nombre: string; contrasenya: string }, rol: string) {
+  async create(registroDto: CreateUsuarioDto) {
     return this.prisma.usuario.create({
-      data: {
-        nombre: data.nombre,
-        contrasenya: data.contrasenya,
-        rol: rol,
-      },
+      data: registroDto,
     });
   }
 
@@ -19,16 +16,25 @@ export class UsuariosService {
     return `This action returns all usuarios`;
   }
 
-  findUsuarioByNombre(nombre: string) {
-    return this.prisma.usuario.findFirst({ where: { nombre: nombre } });
+  findUsuarioByNombre(nombreUsuario: string) {
+    return this.prisma.usuario.findFirst({ where: { nombreUsuario: nombreUsuario } });
   }
 
   findOne(id: number) {
     return `This action returns a #${id} usuario`;
   }
 
+  async updateRecuperacionContraseniaUsuario(usuarioId: number, contrasenya: string) {
+    return this.prisma.usuario.update({
+      where: {
+        id: usuarioId,
+      },
+      data: { contrasenya: contrasenya },
+    });
+  }
+
   update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return `This action updates a #${id} usuario`;
+    return;
   }
 
   remove(id: number) {

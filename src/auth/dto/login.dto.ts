@@ -5,11 +5,10 @@ export class LoginDto {
   @Transform(({ value }) => value.trim())
   @IsString({ message: 'nombre es un string' })
   @MinLength(1, { message: 'nombre no puede estar vacio' })
-  nombre: string;
+  nombreUsuario: string;
   @Transform(({ value }) => value.trim())
   @IsString({ message: 'contrasenya es un string' })
   @MinLength(1, { message: 'contrasenya no puede estar vacio' })
   contrasenya: string;
-
   rol: string;
 }

@@ -9,8 +9,22 @@ export class CreateUsuarioDto {
 
   @Transform(({ value }) => value.trim())
   @IsString()
+  @MinLength(1)
+  apellido: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(1)
+  nombreUsuario: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
   @MinLength(6)
   contrasenya: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  email: string;
 
   @Transform(({ value }) => value.trim())
   @IsString()
