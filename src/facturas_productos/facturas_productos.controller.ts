@@ -32,4 +32,9 @@ export class FacturasProductosController {
   remove(@Param('id') id: string) {
     return this.facturasProductosService.remove(+id);
   }
+
+  @Get('/masVendidos')
+  productosMasVendidosDelMes() {
+    return this.facturasProductosService.productosMasVendidosDelMes();
+  }
 }

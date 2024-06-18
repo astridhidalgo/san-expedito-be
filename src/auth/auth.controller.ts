@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Request } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Request } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto';
 import { LoginDto } from './dto/login.dto';
@@ -6,6 +6,8 @@ import { Rol } from './enums/rol.enum';
 import { Auth } from './decoradores/auth.decorator';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { RecuperacionContraseniaDto } from '../usuarios/dto/recuperacionContraseña.dto';
+import { UpdateProductoDto } from '../productos/dto/update-producto.dto';
+import { ContrasenyaUsuario } from '../usuarios/dto/contrasenya-usuario.dto';
 
 @Controller('usuarios')
 export class AuthController {
@@ -26,6 +28,21 @@ export class AuthController {
   @Post('recuperacion')
   recuperarContraseña(@Body() recuperacionContrasenia: RecuperacionContraseniaDto) {
     return this.authService.recuperacion(recuperacionContrasenia);
+  }
+
+  @Get()
+  findAll() {
+    return this.usuariosService.findAll();
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.usuariosService.remove(Number(id));
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() contrasenyaUsuario: ContrasenyaUsuario) {
+    return this.usuariosService.update(Number(id), contrasenyaUsuario);
   }
 
   // @Get('perfil')

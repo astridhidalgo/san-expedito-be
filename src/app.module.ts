@@ -15,16 +15,18 @@ import { PrismaModule } from './prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { PdfModule } from './pdf/pdf.module';
 import { MailModule } from './mail/mail.module';
+import { BackupModule } from './backup/backup.module';
+import * as process from 'node:process';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: process.env.HOST,
       port: 3306,
-      username: 'root',
-      password: '1234',
-      database: 'san_expedito',
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       entities: [],
       synchronize: true,
     }),
@@ -39,6 +41,7 @@ import { MailModule } from './mail/mail.module';
     AuthModule,
     PdfModule,
     MailModule,
+    BackupModule,
   ],
   controllers: [AppController],
   providers: [AppService],

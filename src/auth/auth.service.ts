@@ -39,7 +39,7 @@ export class AuthService {
     }
     const payload = { usuarioId: usuario.id, nombre: usuario.nombre, rol: usuario.rol };
     const token = await this.jwtService.signAsync(payload);
-    return { token };
+    return usuario;
   }
 
   async recuperacion(recuperacionContrasenia: RecuperacionContraseniaDto) {

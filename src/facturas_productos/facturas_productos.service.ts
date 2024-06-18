@@ -5,6 +5,7 @@ import { PrismaClient } from '@prisma/client';
 @Injectable()
 export class FacturasProductosService {
   constructor(private prisma: PrismaClient) {}
+
   async create(facturaId: number, productoId: number, cantidad: number, totalPorProducto: number, tx: any): Promise<void> {
     const connect = tx ? tx : this.prisma;
     try {
@@ -35,7 +36,60 @@ export class FacturasProductosService {
     return `This action removes a #${id} facturasProducto`;
   }
 
+  async productosMasVendidosDelMes() {
+    const today = new Date();
+    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+    try {
+      const productosMasVendidos = await this.prisma.factura_producto.groupBy({
+        by: ['producto_id'],
+        _sum: {
+          cantidad: true,
+        },
+        where: {
+          factura: {
+            fecha_creacion: {
+              gte: firstDayOfMonth,
+              lte: lastDayOfMonth,
+            },
+          },
+        },
+        orderBy: {
+          _sum: {
+            cantidad: 'desc',
+          },
+        },
+      });
+
+      console.log('Productos más vendidos del mes:');
+      productosMasVendidos.forEach((producto) => {
+        console.log(`Producto ID: ${producto.producto_id}, Cantidad vendida: ${producto._sum.cantidad}`);
+      });
+    } catch (error) {
+      console.error('Error al obtener los productos más vendidos del mes:', error);
+    }
+  }
+
   async findFacturasByProductoId(id: number) {
-    return this.prisma.factura_producto.findMany({ where: { producto_id: id } });
+    try {
+      const facturas = await this.prisma.factura.findMany({
+        where: {
+          factura_producto: {
+            some: {
+              producto_id: id,
+            },
+          },
+        },
+        include: {
+          factura_producto: true, // Incluir los productos relacionados en la factura (opcional)
+        },
+      });
+
+      return facturas;
+    } catch (error) {
+      console.error('Error al buscar facturas por ID de producto:', error);
+      throw error; // Opcional: relanzar el error para manejarlo en un nivel superior
+    }
   }
 }
